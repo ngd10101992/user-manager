@@ -169,3 +169,19 @@ function formError($fieldName, $errors) {
 function old($fieldName, $old, $default = null) {
     return (!empty($old[$fieldName])) ? $old[$fieldName] : $default;
 }
+
+// Kiểm tra trạng thái đăng nhập
+function isLogin() {
+    $checkLogin = false;
+    if (getSession('loginToken')) {
+        $tokenLogin = getSession('loginToken');
+        $queryToken = firstRaw("SELECT userId FROM login_token WHERE token='$tokenLogin'");
+        if (!empty($queryToken)) {
+            $checkLogin = true;
+        } else {
+            removeSession('loginToken');
+        }
+    }
+
+    return $checkLogin;
+}

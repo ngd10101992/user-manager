@@ -11,8 +11,61 @@ layout('header-login', $data);
 $body = getBody();
 
 // echo '<pre>';
-// print_r($body);
+// print_r($_SERVER['REQUEST_METHOD']);
 // echo '</pre>';
+
+// Kiểm tra trạng thái đăng nhập
+if (isLogin()) {
+    redirect('?module=users');
+}
+
+if (isPost()) {
+    $body = getBody();
+    if(!empty(trim($body['email'])) && !empty(trim($body['password']))) {
+        // Kiểm tra đăng nhập
+        $email = $body['email'];
+        $password = $body['password'];
+
+        // Truy vấn lấy thông tin user theo email
+
+        $userQuery = firstRaw("SELECT id, password FROM users WHERE email='$email'");
+
+        if (!empty($userQuery)) {
+            $passwordHash = $userQuery['password'];
+            if (password_verify($password, $passwordHash)) {
+                // Tạo token login
+                $tokenLogin = sha1(uniqid().time());
+                $dataToken = [
+                    'userId' => $userQuery['id'],
+                    'token' => $tokenLogin,
+                    'createAt' => date('Y-m-d H:s:i')
+                ];
+                
+                $insertTokenStatus = insert('login_token', $dataToken);
+                if ($insertTokenStatus) {
+                    // Lưu loginToken vào session
+                    setSession('loginToken', $tokenLogin);
+                    // Chuyển hướng qua trang quản lý users
+                    redirect('?module=users');
+                } else {
+                    setFlashData('msg', 'Lỗi hệ thống, bạn không thể đăng nhập vào lúc này !');
+                    setFlashData('msg_type', 'danger');
+                }
+
+            } else {
+                setFlashData('msg', 'Mật khẩu không chính xác !');
+                setFlashData('msg_type', 'danger');
+            }
+        } else {
+            setFlashData('msg', 'Email không tồn tại trong hệ thống !');
+            setFlashData('msg_type', 'danger');
+        }
+    } else {
+        setFlashData('msg', 'Vui lòng nhập email và mật khẩu');
+        setFlashData('msg_type', 'danger');
+    }
+    redirect('?module=auth&action=login');
+}
 
 $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
