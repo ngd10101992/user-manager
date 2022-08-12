@@ -44,7 +44,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(100) COLLATE utf16_unicode_ci DEFAULT NULL,
   `fullname` varchar(20) COLLATE utf16_unicode_ci DEFAULT NULL,
-  `password` varchar(50) COLLATE utf16_unicode_ci DEFAULT NULL,
+  `password` varchar(100) COLLATE utf16_unicode_ci DEFAULT NULL,
   `forgotToken` varchar(50) COLLATE utf16_unicode_ci DEFAULT NULL,
   `activeToken` varchar(50) COLLATE utf16_unicode_ci DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 0,

@@ -2,6 +2,7 @@
 if (!defined('_INCODE')) die('Access Deined...');
 ?>
 </div>
+</div>
 <footer>
     <p class="text-center">Copyright &copy; <?php echo date('Y') ?> by Unicode</p>
 </footer>

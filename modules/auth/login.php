@@ -14,11 +14,15 @@ $body = getBody();
 // print_r($body);
 // echo '</pre>';
 
+$msg = getFlashData('msg');
+$msgType = getFlashData('msg_type');
+
 ?>
     <div class="row justify-content-center align-items-center">
-        <h1 class="text-center">Đăng nhập</h1>
         <div class="col-6">
             <div class="manager-form">
+                <?php getMsg($msg, $msgType); ?>
+                <h1 class="text-center">Đăng nhập</h1>
                 <form class="form" method="post" action="">
                     <div class="mb-3">
                         <label class="form-label">Email address</label>

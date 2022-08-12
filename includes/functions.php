@@ -31,7 +31,8 @@ function sendMail($to, $subject, $content) {
         $mail->addAddress($to);     //Add a recipient
         
         //Content
-        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->isHTML(true);                               //Set email format to HTML
+        $mail->CharSet = 'UTF-8';
         $mail->Subject = $subject;
         $mail->Body    = $content;
 
@@ -122,4 +123,49 @@ function isNumberFloat($number, $range = []) {
     }
 
     return $checkNumber;
+}
+
+function isPhone($phone) {
+    $checkFirstZero = false;
+    $checkNumberLast = false;
+
+    if ($phone[0] == '0' ) {
+        $checkFirstZero = true;
+        $phone = substr($phone, 1);
+    }
+
+    if (isNumberInt($phone) && strlen($phone) == 9 ) {
+        $checkNumberLast = true;
+    }
+
+    if ($checkFirstZero && $checkNumberLast) {
+        return true;
+    }
+
+    return false;
+}
+
+// Hàm tạo thông báo
+function getMsg($msg, $type = 'success') {
+    if (!empty($msg)) {
+        echo '<div class="alert alert-'.$type.'" role="alert">';
+        echo $msg;
+        echo '</div>';
+    }
+}
+
+// Hàm chuyển hướng
+function redirect($path) {
+    header("Location: $path");
+    exit();
+}
+
+// Hàm thông báo lỗi
+function formError($fieldName, $errors) {
+    return (!empty($errors[$fieldName])) ? '<span class="text-danger">'.reset($errors[$fieldName]).'</span>' : null;
+}
+
+// Hàm hiển thị dữ liệu cũ
+function old($fieldName, $old, $default = null) {
+    return (!empty($old[$fieldName])) ? $old[$fieldName] : $default;
 }

@@ -19,8 +19,8 @@ function query($sql, $data = [], $statementStatus = false) {
 
         return $query;
     } catch (Exception $exception) {
-        echo $exception->getMessage().'<br/>';
-        echo 'File: '.$exception->getFile().' - Line: '.$exception->getLine().'<br />';
+        require_once 'modules/errors/database.php';
+        die();
     }
 }
 
@@ -104,8 +104,12 @@ function first($table, $field='*', $condition='') {
     return firstRaw($sql);
 }
 
+// Lấy số record
 function getRaws($sql) {
-
+    $statement = query($sql, [], true);
+    if (!empty($statement)) {
+        return $statement->rowCount();
+    }
 }
 
 function insertId() {
