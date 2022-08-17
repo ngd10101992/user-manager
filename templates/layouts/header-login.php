@@ -1,5 +1,11 @@
 <?php
 if (!defined('_INCODE')) die('Access Deined...');
+
+// Kiểm tra trạng thái đăng nhập
+if (isLogin()) {
+    redirect('?module=users');
+}
+
 ?>
 
 <!DOCTYPE html>

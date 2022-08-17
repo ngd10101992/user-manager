@@ -14,11 +14,6 @@ $body = getBody();
 // print_r($_SERVER['REQUEST_METHOD']);
 // echo '</pre>';
 
-// Kiểm tra trạng thái đăng nhập
-if (isLogin()) {
-    redirect('?module=users');
-}
-
 if (isPost()) {
     $body = getBody();
     if(!empty(trim($body['email'])) && !empty(trim($body['password']))) {
